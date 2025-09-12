@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\LoginRequest;
+use App\Http\Requests\Auth\SigninRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
-class LoginController extends Controller
+class SigninController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,19 +22,19 @@ class LoginController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Auth/Signin');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(LoginRequest $request): RedirectResponse
+    public function store(SigninRequest $request): RedirectResponse
     {   
         $request->authenticate();
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route(''));
+        return redirect()->intended(route('dashboard', absolute: false));
     }
 
     /**

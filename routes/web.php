@@ -10,6 +10,10 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth'])->name('dashboard');
 
+Route::get('/signup', function () {
+    return Inertia::render('Auth/Signup');
+})->name('signup');
+
 Route::middleware('guest')->group(function () {
     Route::get('signin', [SigninController::class, 'create'])->name('login');
     Route::post('signin', [SigninController::class, 'store']);

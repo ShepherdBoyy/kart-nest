@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\SigninController;
+use App\Http\Controllers\SignupController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -10,11 +11,10 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-Route::get('/signup', function () {
-    return Inertia::render('Auth/Signup');
-})->name('signup');
-
 Route::middleware('guest')->group(function () {
+    Route::get("signup", [SignupController::class, "create"])->name("signup");
+    Route::post("signup", [SignupController::class, "store"]);
+
     Route::get('signin', [SigninController::class, 'create'])->name('login');
     Route::post('signin', [SigninController::class, 'store']);
 });

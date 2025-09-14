@@ -11,14 +11,14 @@ export default function Signup() {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        // post(route("login"), {
-        //     onFinish: () => reset('password'),
-        // });
+        post(route("signup"), {
+            onFinish: () => reset('password', "password_confirmation"),
+        });
     }
 
     return (
         <>
-            <Head title="Sign in" />
+            <Head title="Sign up" />
             <div className='min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900'>
                 <div className='w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700'>
                     <div className='p-6 space-y-4 md:space-y-6 sm:p-8'>
@@ -73,6 +73,23 @@ export default function Signup() {
                                 />
                                 <p className='text-sm text-red-600 dark:text-red-400 mt-2'>
                                     {errors.password}
+                                </p>
+                            </div>
+
+                            <div>
+                                <label htmlFor="password_confirmation" className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>Confirm Password</label>
+                                <input
+                                    type='password'
+                                    name='password_confirmation'
+                                    id='password_confirmation'
+                                    placeholder='Re-enter your password'
+                                    className='bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                                    value={data.password_confirmation}
+                                    onChange={(e) => setData('password_confirmation', e.target.value)}
+                                    required
+                                />
+                                <p className='text-sm text-red-600 dark:text-red-400 mt-2'>
+                                    {errors.password_confirmation}
                                 </p>
                             </div>
 

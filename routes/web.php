@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\NewPasswordController;
 use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\SigninController;
 use App\Http\Controllers\SignupController;
@@ -20,4 +21,8 @@ Route::middleware('guest')->group(function () {
     Route::post('signin', [SigninController::class, 'store']);
 
     Route::get("forgot-password", [PasswordResetController::class, "create"])->name("password.request");
+    Route::post("forgot-password", [PasswordResetController::class, "store"])->name("password.email");
+
+    Route::get("reset-password/{token}", [NewPasswordController::class, "create"])->name("password.reset");
+    Route::post("reset-password", [NewPasswordController::class, "store"])->name("password.store");
 });

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\SigninController;
 use App\Http\Controllers\SignupController;
 use Illuminate\Support\Facades\Route;
@@ -17,4 +18,6 @@ Route::middleware('guest')->group(function () {
 
     Route::get('signin', [SigninController::class, 'create'])->name('login');
     Route::post('signin', [SigninController::class, 'store']);
+
+    Route::get("forgot-password", [PasswordResetController::class, "create"])->name("password.request");
 });

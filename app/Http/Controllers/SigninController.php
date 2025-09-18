@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Auth\SigninRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -68,8 +69,14 @@ class SigninController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request): RedirectResponse
     {
-        //
+        Auth::guard('web')->logout();
+
+        $request-session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect("/");
     }
 }

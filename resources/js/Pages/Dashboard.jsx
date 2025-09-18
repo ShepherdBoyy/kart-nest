@@ -1,4 +1,4 @@
-import { Head } from '@inertiajs/react'
+import { Head, Link } from '@inertiajs/react'
 import React from 'react'
 
 export default function Dashboard() {
@@ -12,6 +12,10 @@ export default function Dashboard() {
             <h1 className='text-xl text-center font-bold leading-tight tracking-tight md:text-2xl dark:text-white'>
               Welcome! You're Logged In!
             </h1>
+
+            <Link className='font-medium text-center text-blue-600 hover:underline'>
+              Logout
+            </Link>
           </div>
         </div>
       </div>

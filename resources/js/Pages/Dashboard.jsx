@@ -13,9 +13,15 @@ export default function Dashboard() {
               Welcome! You're Logged In!
             </h1>
 
-            <Link className='font-medium text-center text-blue-600 hover:underline'>
-              Logout
-            </Link>
+            <div className='flex justify-center'>
+              <Link
+                href={route("logout")}
+                method='post'
+                className='font-medium text-blue-600 hover:underline'
+              >
+                Logout
+              </Link>
+            </div>
           </div>
         </div>
       </div>

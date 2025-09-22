@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\NewPasswordController;
 use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\SigninController;
@@ -29,4 +30,6 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::post("logout", [SigninController::class, "destroy"])->name("logout");
+
+    Route::get("verify-email", EmailVerificationController::class)->name("verification.notice");
 });

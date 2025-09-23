@@ -6,6 +6,7 @@ use App\Http\Controllers\NewPasswordController;
 use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\SigninController;
 use App\Http\Controllers\SignupController;
+use App\Http\Controllers\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -13,7 +14,7 @@ Route::redirect('/', '/dashboard');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
-})->middleware(['auth'])->name('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('guest')->group(function () {
     Route::get("signup", [SignupController::class, "create"])->name("signup");
@@ -37,4 +38,8 @@ Route::middleware('auth')->group(function () {
     Route::post("email/verificaiton-notification", [EmailVerificationNotifyController::class, "store"])
         ->middleware("throttle:6,1")
         ->name("verification.send");
+    
+    Route::get("verify-email/{id}/{hash}", VerifyEmailController::class)
+        ->middleware(["signed", "throttle:6,1"])
+        ->name("verification.verify");
 });

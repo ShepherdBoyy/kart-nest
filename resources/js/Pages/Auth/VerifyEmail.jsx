@@ -12,7 +12,7 @@ export default function VerifyEmail({ status }) {
 
   return (
     <>
-        <Head title='Verify Email' />
+        <Head title='Email Verification' />
 
         <div className='min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900'>
             <div className='w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700'>

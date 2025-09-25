@@ -1,6 +1,6 @@
 import { Head, Link, useForm } from '@inertiajs/react'
 
-export default function Login({ status, resetPassword }) {
+export default function Login({ status }) {
   const { data, setData, post, processing, errors, reset } = useForm({
     email: '',
     password: '',
@@ -123,7 +123,7 @@ export default function Login({ status, resetPassword }) {
                 <p className='text-sm text-center text-slate-300'>
                   Don't have an account?
                   <Link
-                    href="#"
+                    href={route("register")}
                     className='ml-1 text-blue-400 hover:text-blue-300 transition-colors'
                   >
                     Register here

@@ -15,7 +15,6 @@ class LoginController extends Controller
     public function create()
     {
         return Inertia::render("Auth/Login", [
-            "resetPassword" => Route::has("password.request"),
             "status" => session("status")
         ]);
     }

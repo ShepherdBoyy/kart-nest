@@ -1,4 +1,4 @@
-import { Head, Link, useForm } from "@inertiajs/react";
+import { Head, useForm } from "@inertiajs/react";
 
 export default function ResetPassword({ email, token }) {
     const { data, setData, post, processing, errors, reset } = useForm({

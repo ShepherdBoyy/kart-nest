@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\NewPasswordController;
+use App\Http\Controllers\Auth\PasswordResetcontroller;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResendEmailVerificationController;
 use App\Http\Controllers\Auth\VerifyEmailController;
@@ -15,6 +17,17 @@ Route::middleware('guest')->group(function () {
     Route::get("register", [RegisterController::class, "create"])
         ->name("register");
     Route::post('register', [RegisterController::class, "store"]);
+
+    Route::get("forgot-password", [PasswordResetcontroller::class, "create"])
+        ->name("password.request");
+    Route::post("forgot-password", [PasswordResetcontroller::class, "store"])
+        ->name("password.email");
+
+    Route::get("reset-password/{token}", [NewPasswordController::class, "create"])
+        ->name("password.reset");
+    Route::post("reset-password", [NewPasswordController::class, "store"])
+        ->name("password.store");
+
 });
 
 Route::middleware("auth")->group(function () {

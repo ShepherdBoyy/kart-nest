@@ -138,7 +138,7 @@ export default function Login({ status }) {
                   </div>
 
                   <Link
-                    href="#"
+                    href={route("password.request")}
                     className='text-sm text-blue-400 hover:text-blue-300 transition-colors'
                   >
                     Forgot password?

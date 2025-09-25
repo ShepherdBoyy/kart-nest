@@ -1,4 +1,5 @@
 import { Head, Link, useForm } from '@inertiajs/react'
+import { useEffect, useState } from 'react';
 
 export default function Login({ status }) {
   const { data, setData, post, processing, errors, reset } = useForm({
@@ -6,6 +7,29 @@ export default function Login({ status }) {
     password: '',
     remember: false
   })
+
+  const [lockoutSeconds, setLockoutSeconds] = useState(null)
+
+  useEffect(() => {
+    if (errors.email && errors.email.includes("seconds")) {
+      const match = errors.email.match(/(\d+)\s*seconds?/)
+      if (match) {
+        setLockoutSeconds(parseInt(match[1], 10))
+      }
+    }
+  }, [errors.email])
+
+  useEffect(() => {
+    let timer
+
+    if (lockoutSeconds && lockoutSeconds > 0) {
+      timer = setInterval(() => {
+        setLockoutSeconds(prev => (prev > 0 ? prev - 1 : 0))
+      }, 1000)
+    }
+
+    return () => clearInterval(timer)
+  }, [lockoutSeconds])
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -56,9 +80,14 @@ export default function Login({ status }) {
                       placeholder='Enter your email'
                     />
                   </div>
-                  <p className='text-sm text-red-400 mt-2'>
-                    {errors.email}
-                  </p>
+                  {errors.email && (
+                    <p className='text-sm text-red-400 mt-2'>
+                      {lockoutSeconds
+                        ? `Too many attempts. Please try again in ${lockoutSeconds} seconds.`
+                        : errors.email
+                      }
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -84,9 +113,11 @@ export default function Login({ status }) {
                       placeholder='Enter your password'
                     />
                   </div>
-                  <p className='text-sm text-red-400 mt-2'>
-                    {errors.password}
-                  </p>
+                  {errors.password && (
+                    <p className='text-sm text-red-400 mt-2'>
+                      {errors.password}
+                    </p>
+                  )}
                 </div>
 
                 <div className='flex items-center justify-between'>
@@ -115,9 +146,12 @@ export default function Login({ status }) {
                 </div>
 
                 <button
+                  disabled={processing || (lockoutSeconds && lockoutSeconds > 0)}
                   className='w-full mt-5 py-2.5 px-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:from-blue-700 hover:to-purple-700 text-white font-medium rounded-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-800'
                 >
-                  Log in
+                  {lockoutSeconds && lockoutSeconds > 0
+                    ? `Locked (${lockoutSeconds}s)`
+                    : (processing ? 'Logging in...' : "Login")}
                 </button>
 
                 <p className='text-sm text-center text-slate-300'>

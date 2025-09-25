@@ -5,12 +5,13 @@ export default function Dashboard() {
     <>
       <Head title='Dashboard' />
 
-      <div className='min-h-screen bg-slate-900 relative p-4'>
+      <div className='min-h-screen bg-slate-900 flex items-center justify-center relative p-4'>
           <div className='absolute top-4 right-4'>
             <Link
               href={route("logout")}
               method="post"
-              className='text-blue-400 hover:text-blue-300 transition-colors'
+              className="px-4 py-2 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-medium rounded-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-slate-900"
+              as="button"
             >
               Logout
             </Link>

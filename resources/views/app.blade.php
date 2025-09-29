@@ -8,11 +8,13 @@
 
     @routes
     @viteReactRefresh
-    @vite(['resources/js/app.jsx', "resources/js/Pages/{$page['component']}.jsx"])
+    @vite('resources/js/app.jsx', "resources/js/Pages/{$page['component']}.jsx")
     @inertiaHead
+
+    <title inertia>{{ config('app.name', 'Laravel') }}</title>
 </head>
 
-<body class="font-sans antialiased">
+<body>
     @inertia
 </body>
 

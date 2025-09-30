@@ -7,6 +7,6 @@ Route::redirect('/', '/dashboard');
 
 Route::get("/dashboard", function () {
     return Inertia::render("Dashboard");
-})->name("dashboard");  
+})->middleware(["verified"])->name("dashboard");  
 
 require __DIR__ . "/auth.php";

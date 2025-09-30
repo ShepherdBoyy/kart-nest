@@ -71,7 +71,7 @@ export default function Register() {
             <p>{errors.password_confirmation}</p>
           )}
 
-          <button>Register</button>
+          <button disabled={processing}>Register</button>
         </form>
     </>
   )

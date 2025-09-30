@@ -1,6 +1,6 @@
 import { Head, useForm } from "@inertiajs/react";
 
-export default function Login() {
+export default function Login({ status }) {
   const { data, setData, post, processing, errors, reset } = useForm({
     email: "",
     password: "",
@@ -20,6 +20,11 @@ export default function Login() {
           <Head title="Login" />
 
           <h1>Login</h1>
+
+          {status && (
+            <p>{status}</p>
+          )}
+          
           <form onSubmit={handleSubmit}>
               <label htmlFor="email">Email:</label>
               <input

@@ -35,6 +35,9 @@ export default function Register() {
             <p>{errors.name}</p>
           )}
 
+          <br />
+          <br />
+
           <label htmlFor='email'>Email:</label>
           <input
             name='email'
@@ -46,6 +49,9 @@ export default function Register() {
           {errors.email && (
             <p>{errors.email}</p>
           )}
+
+          <br />
+          <br />
 
           <label htmlFor='password'>Password:</label>
           <input
@@ -59,6 +65,9 @@ export default function Register() {
             <p>{errors.password}</p>
           )}
 
+          <br />
+          <br />
+
           <label htmlFor='password_confirmation'>Confirm Password:</label>
           <input
             name='password_confirmation' 
@@ -70,6 +79,9 @@ export default function Register() {
           {errors.password_confirmation && (
             <p>{errors.password_confirmation}</p>
           )}
+
+          <br />
+          <br />
 
           <button disabled={processing}>Register</button>
         </form>

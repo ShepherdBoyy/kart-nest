@@ -23,7 +23,7 @@ export default function VerifyEmail({ status }) {
             )}
 
             <form onSubmit={handleSubmit}>
-                <button type="submit">Resend Verification Email</button>
+                <button disabled={processing} type="submit">Resend Verification Email</button>
             </form>
 
             <Link href={route("logout")} method="post" as="button">

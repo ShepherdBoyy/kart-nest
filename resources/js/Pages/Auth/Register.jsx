@@ -1,4 +1,4 @@
-import { Head, useForm } from '@inertiajs/react'
+import { Head, Link, useForm } from '@inertiajs/react'
 import React from 'react'
 
 export default function Register() {
@@ -83,8 +83,10 @@ export default function Register() {
           <br />
           <br />
 
-          <button disabled={processing}>Register</button>
+          <button type='submit' disabled={processing}>Register</button>
         </form>
+
+        <p>Already have an account? <Link href={route("login")}>Login here</Link></p>
     </>
   )
 }

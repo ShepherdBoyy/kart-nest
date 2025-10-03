@@ -1,4 +1,4 @@
-import { Head, useForm } from '@inertiajs/react'
+import { Head, Link, useForm } from '@inertiajs/react'
 
 export default function Dashboard() {
   
@@ -9,6 +9,13 @@ export default function Dashboard() {
       
         <h1>Welcome to dashboard</h1>
 
+        <Link
+          href={route("logout")}
+          method='post'
+          as="button"
+        >
+          Logout
+        </Link>
     </>
   )
 }

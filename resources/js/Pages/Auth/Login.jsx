@@ -1,4 +1,4 @@
-import { Head, useForm } from "@inertiajs/react";
+import { Head, Link, useForm } from "@inertiajs/react";
 
 export default function Login({ status }) {
   const { data, setData, post, processing, errors, reset } = useForm({
@@ -37,6 +37,7 @@ export default function Login({ status }) {
               {errors.email && <p>{errors.email}</p>}
 
               <br />
+              <br />
 
               <label htmlFor="password">Password:</label>
               <input
@@ -49,6 +50,7 @@ export default function Login({ status }) {
               {errors.password && <p>{errors.password}</p>}
 
               <br/>
+              <br/>
 
               <input
                 name="remember"
@@ -59,9 +61,12 @@ export default function Login({ status }) {
               <label htmlFor="remember">Remember me</label>
 
               <br />
+              <br />
 
               <button disabled={processing}>Login</button>
           </form>
+
+      <p>Don't have an account? <Link href={route("register")}>Register here</Link></p>
       </>
   );
 }

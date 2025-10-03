@@ -63,6 +63,11 @@ export default function Login({ status }) {
               <br />
               <br />
 
+              <Link href={route("password.request")}>Forgot Password?</Link>
+
+              <br />
+              <br />
+
               <button disabled={processing}>Login</button>
           </form>
 

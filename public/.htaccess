@@ -1,0 +1,9 @@
+Options -MultiViews -Indexes
+RewriteEngine On
+
+RewriteRule ^(vendor|app|config|storage|database|resources)(/|$) - [F,L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Send everything else to index.php
+RewriteRule ^ index.php [QSA,L]

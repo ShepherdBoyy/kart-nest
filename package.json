@@ -1,0 +1,27 @@
+{
+  "name": "kart-nest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npx @tailwindcss/cli -i resources/css/app.css -o public/assets/css/app.css",
+    "watch": "npx @tailwindcss/cli -i resources/css/app.css -o public/assets/css/app.css --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ShepherdBoyy/kart-nest.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ShepherdBoyy/kart-nest/issues"
+  },
+  "homepage": "https://github.com/ShepherdBoyy/kart-nest#readme",
+  "dependencies": {
+    "@tailwindcss/cli": "^4.2.2",
+    "daisyui": "^5.5.19",
+    "tailwindcss": "^4.2.2"
+  }
+}

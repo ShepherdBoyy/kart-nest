@@ -19,6 +19,7 @@ if (!in_array($command, ["migrate", "rollback"], true)) {
     echo "Usage:\n";
     echo "  php migrate.php migrate   - Run all pending migrations\n";
     echo "  php migrate.php rollback  - Rollback the last migration\n";
+    exit(1);
 }
 
 $db = App\Core\Database::getInstance()->getConnection();
@@ -84,7 +85,7 @@ if ($command === "migrate") {
             require_once $file;
 
             $className = filenameToClassname($filename);
-            $fullClass = "Database\\Migrations\\" . $className;
+            $fullClass = $className;
 
             if (!class_exists($fullClass)) {
                 throw new \RuntimeException(
@@ -131,7 +132,7 @@ if ($command === "rollback") {
         require_once $file;
 
         $className = filenameToClassname($lastMigration);
-        $fullClass = "App\\Database\\Migrations" . $className;
+        $fullClass = $className;
 
         if (!class_exists($fullClass)) {
             throw new \RuntimeException(
@@ -139,13 +140,13 @@ if ($command === "rollback") {
             );
         }
 
-        $migration = new $fullClass();
-        $migration->down();
-
         $stmt = $db->prepare(
             "DELETE FROM migrations WHERE migration = ?"
         );
         $stmt->execute([$lastMigration]);
+
+        $migration = new $fullClass();
+        $migration->down();
 
         output("    Rolled back: {$lastMigration}", "success");
         output("\nRollback completed.", "success");

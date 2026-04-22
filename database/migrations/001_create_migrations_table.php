@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-namespace Database\Migrations;
-
 use App\Core\Migration;
 
 class CreateMigrationsTable extends Migration

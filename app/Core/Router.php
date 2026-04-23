@@ -35,28 +35,23 @@ class Router
             $controllerMethod = $route["method"];
 
             if (!class_exists($controllerClass)) {
-                $this->abort(500, "Controller {$controllerClass} not found.");
-                return;
+                throw new \RuntimeException(
+                    "Controller {$controllerClass} not found."
+                );
             }
 
             $controller = new $controllerClass();
 
             if (!method_exists($controller, $controllerMethod)) {
-                $this->abort(500, "Method {$controllerMethod} not found in {$controllerClass}.");
-                return;
+                throw new \RuntimeException(
+                    "Method {$controllerMethod} not found in {$controllerClass}."
+                );
             }
 
             $controller->$controllerMethod();
             return;
         }
 
-        $this->abort(404, "Page not found.");
-    }
-
-    private function abort(int $statusCode, string $message): void
-    {
-        http_response_code($statusCode);
-        echo $message;
-        exit;
+        throw new NotFoundException("No route found for: {$url}");
     }
 }

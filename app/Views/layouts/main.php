@@ -56,6 +56,27 @@
     </div>
 
     <main class="container mx-auto px-4 py-8">
+        <?php $flashMessages = App\Core\Session::getFlash(); ?>
+
+        <?php foreach ($flashMessages as $type => $messages): ?>
+            <?php foreach ($messages as $type => $message): ?>
+                <?php
+                $alertClass = match($type) {
+                    "success" => "alert-success",
+                    "error" => "alert-error",
+                    "warning" => "alert-warning",
+                    "info" => "alert-info",
+                    default => "alert-info"
+                }
+                ?>
+
+                <div class="alert mb-4 <?= $alertClass ?>">
+                    <span><?= htmlspecialchars($message) ?></span>
+                </div>
+
+            <?php endforeach ?>
+        <?php endforeach ?>
+
         <?= $content ?>
     </main>
 </body>

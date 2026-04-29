@@ -45,4 +45,11 @@ class Controller
             );
         }
     }
+
+    protected function getErrors(): array
+    {
+        $errors = Session::get("errors", []);
+        Session::remove("errors");
+        return $errors;
+    }
 }

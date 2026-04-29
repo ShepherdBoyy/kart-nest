@@ -29,7 +29,7 @@
             <?php endif; ?>
 
             <div class="card-actions">
-                <a href="/kartnest/public/" class="btn btn-primary">
+                <a href="/kart-nest/public/" class="btn btn-primary">
                     Go Home
                 </a>
             </div>

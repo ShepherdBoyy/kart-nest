@@ -15,6 +15,9 @@ class App
     private function registerRoutes(): void
     {
         $this->router->get("/", "HomeController", "index");
+
+        $this->router->get("/register", "RegisterController", "showForm");
+        $this->router->post("/register", "RegisterController", "register");
     }
 
     public function run(): void

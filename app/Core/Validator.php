@@ -110,6 +110,18 @@ class Validator
         return null;
     }
 
+    private function checkConfirmed(string $field, mixed $value, ?string $param): ?string
+    {
+        $otherField = $param ?? $field . "_confirmation";
+        $otherValue = $this->data[$otherField] ?? "";
+
+        if ($value !== $otherValue) {
+            return $this->formatFieldName($field) . "s do not match";
+        }
+
+        return null;
+    }
+
     private function checkUnique(string $field, mixed $value, ?string $param): ?string
     {
         if ($param === null) {
@@ -138,7 +150,7 @@ class Validator
         return null;
     }
 
-    private function checkAlapha(string $field, mixed $value, ?string $param): ?string
+    private function checkAlpha(string $field, mixed $value, ?string $param): ?string
     {
         if (!preg_match("/^[a-zA-Z\s]+$/", (string) $value)) {
             return $this->formatFieldName($field) . " must only contain letters";

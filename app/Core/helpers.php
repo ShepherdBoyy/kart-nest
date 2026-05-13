@@ -5,7 +5,7 @@ declare(strict_types=1);
 function csrf_field(): string
 {
     $token = App\Core\Session::generateCsrfToken();
-    return '<input type"hidden" name="_csrf_token" value="'
+    return '<input type="hidden" name="_csrf_token" value="'
         . htmlspecialchars($token)
         . '" />';
 }

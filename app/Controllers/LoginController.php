@@ -91,7 +91,11 @@ class LoginController extends Controller
 
     private function storeUserInSession(array $user): void
     {
-        Session::set("user_id", (int) $user["user_id"] ?? $user["user_id"]);
+        $userId = isset($user["id"])
+            ? (int) $user["id"]
+            : (int) ($user["user_id"] ?? 0);
+
+        Session::set("user_id", $userId);
         Session::set("user_name", $user["name"]);
         Session::set("user_email", $user["email"]);
         Session::set("user_role", $user["role"]);

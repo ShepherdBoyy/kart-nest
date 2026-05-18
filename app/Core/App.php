@@ -18,6 +18,10 @@ class App
 
         $this->router->get("/register", "RegisterController", "showForm");
         $this->router->post("/register", "RegisterController", "register");
+
+        $this->router->get("/login", "LoginController", "showForm");
+        $this->router->post("/login", "LoginController", "login");
+        $this->router->get("/logout", "LoginController", "logout");
     }
 
     public function run(): void

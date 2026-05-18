@@ -1,6 +1,6 @@
 <div class="flex-1 flex items-center justify-center">
     <div class="card bg-base-100 shadow-md w-full max-w-md">
-        <div class="card-body gap-6">
+        <div class="card-body">
             <div class="text-center">
                 <h1 class="text-2xl font-bold text-base-content">Create an account</h1>
                 <p class="text-base-content/60 text-sm mt-1">Join KartNest and start shopping</p>
@@ -116,15 +116,15 @@
                 <button type="submit" class="btn btn-primary w-full">
                     Create account
                 </button>
-
-                <div class="divider text-base-content/40 text-xs">
-                    already have an account?
-                </div>
-
-                <a href="<?= $_ENV["APP_URL"] ?>/login" class="btn btn-outline w-full">
-                    Sign in
-                </a>
             </form>
+
+            <div class="divider text-base-content/40 text-xs">
+                already have an account?
+            </div>
+
+            <a href="<?= $_ENV["APP_URL"] ?>/login" class="btn btn-outline w-full">
+                Sign in
+            </a>
         </div>
     </div>
 </div>

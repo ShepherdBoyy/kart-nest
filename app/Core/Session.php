@@ -38,7 +38,7 @@ class Session
 
     public static function has(string $key): bool
     {
-        return isset($_SERVER[$key]);
+        return isset($_SESSION[$key]);
     }
 
     public static function remove(string $key): void

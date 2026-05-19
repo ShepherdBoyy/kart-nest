@@ -75,6 +75,15 @@ class LoginController extends Controller
         Session::regenerateCsrfToken();
         Session::flash("success", "Welcome back, " . $user["name"] . "!");
 
+        $intendedUrl = Session::get("intended_url", "/");
+        Session::remove("intended_url");
+
+        if (!str_starts_with($intendedUrl, "http") && !str_starts_with($intendedUrl, "//")) {
+            $base = rtrim($_ENV["APP_URL"] ?? "", "/");
+            header("Location: " . $base);
+            exit;
+        }
+
         $this->redirect("/");
     }
 

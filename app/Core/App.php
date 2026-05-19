@@ -16,12 +16,18 @@ class App
     {
         $this->router->get("/", "HomeController", "index");
 
-        $this->router->get("/register", "RegisterController", "showForm");
-        $this->router->post("/register", "RegisterController", "register");
+        $this->router->get("/register", "RegisterController", "showForm")
+            ->middleware("guest");
+        $this->router->post("/register", "RegisterController", "register")
+            ->middleware("guest");
 
-        $this->router->get("/login", "LoginController", "showForm");
-        $this->router->post("/login", "LoginController", "login");
-        $this->router->get("/logout", "LoginController", "logout");
+        $this->router->get("/login", "LoginController", "showForm")
+            ->middleware("guest");
+        $this->router->post("/login", "LoginController", "login")
+            ->middleware("guest");
+            
+        $this->router->get("/logout", "LoginController", "logout")
+            ->middleware("auth");
     }
 
     public function run(): void

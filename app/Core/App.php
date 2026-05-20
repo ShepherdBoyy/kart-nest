@@ -28,6 +28,11 @@ class App
             
         $this->router->get("/logout", "LoginController", "logout")
             ->middleware("auth");
+        
+        $this->router->get("/forgot-password", "PasswordResetController", "showForgotForm")
+            ->middleware("guest");
+        
+        
     }
 
     public function run(): void

@@ -1,2 +1,7 @@
 @import "tailwindcss";
+
+@source "../../app/**/*.php";
+@source "../../resources/**/*.php";
+@source "../../public/**/*.php";
+
 @plugin "daisyui";

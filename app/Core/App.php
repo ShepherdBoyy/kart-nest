@@ -25,14 +25,19 @@ class App
             ->middleware("guest");
         $this->router->post("/login", "LoginController", "login")
             ->middleware("guest");
-            
-        $this->router->get("/logout", "LoginController", "logout")
-            ->middleware("auth");
         
         $this->router->get("/forgot-password", "PasswordResetController", "showForgotForm")
             ->middleware("guest");
+        $this->router->post("/forgot-password", "PasswordResetController", "sendResetLink")
+            ->middleware("guest");
         
-        
+        $this->router->get("/reset-password", "PasswordResetController", "showResetForm")
+            ->middleware("guest");
+        $this->router->post("/reset-password", "PasswordResetController", "resetPassword")
+            ->middleware("guest");
+
+        $this->router->get("/logout", "LoginController", "logout")
+            ->middleware("auth");
     }
 
     public function run(): void

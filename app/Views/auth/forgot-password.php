@@ -1,4 +1,4 @@
-<div class="flex-1 flex items-center justify-center py-35">
+<div class="flex-1 flex items-center justify-center py-30">
     <div class="w-full max-w-lg">
         <div class="card bg-base-100 border-base-300 shadow-xl rounded-3xl overflow-hidden">
             <div class="card-body p-7 sm:p-8">

@@ -27,13 +27,12 @@ class PasswordResetService
 
         $rawToken = bin2hex(random_bytes(32));
         $tokenHash = password_hash($rawToken, PASSWORD_DEFAULT);
-        $expiresAt = date("Y-m-d H:i:s", time() + self::TOKEN_EXPIRY_SECONDS);
         $stmt = $db->prepare("INSERT INTO password_resets
                 (email, token_hash, expires_at)
             VALUES
-                (?, ?, ?)
+                (?, ?, DATE_ADD(NOW(), INTERVAL 1 HOUR))
         ");
-        $stmt->execute([$email, $tokenHash, $expiresAt]);
+        $stmt->execute([$email, $tokenHash]);
 
         $resetUrl = rtrim($_ENV["APP_URL"], "/")
             . "/reset-password?token="
@@ -100,7 +99,7 @@ class PasswordResetService
             return false;
         }
         if ($tokenRecord["email"] !== $email) {
-            return true;
+            return false;
         }
 
         $user = User::findBy("email", $email);

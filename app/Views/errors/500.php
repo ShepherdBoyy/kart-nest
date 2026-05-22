@@ -4,38 +4,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>500 — Server Error | KartNest</title>
+
     <link rel="stylesheet" href="/kart-nest/public/assets/css/app.css">
 </head>
-<body class="bg-base-200 min-h-screen flex items-center justify-center">
 
-    <div class="card bg-base-100 shadow-md w-full max-w-md">
-        <div class="card-body items-center text-center gap-4">
-
-            <div class="text-8xl font-bold text-error opacity-20">
-                500
-            </div>
-
-            <h1 class="card-title text-2xl">Something Went Wrong</h1>
-
-            <p class="text-base-content/70">
-                We are experiencing a technical issue.
-                Please try again in a moment.
-            </p>
-
-            <?php if (!empty($debugMessage)): ?>
-                <div class="alert alert-error text-left w-full">
-                    <span class="text-sm font-mono"><?= htmlspecialchars($debugMessage) ?></span>
-                </div>
-            <?php endif; ?>
-
-            <div class="card-actions">
-                <a href="/kart-nest/public/" class="btn btn-primary">
-                    Go Home
-                </a>
-            </div>
-
-        </div>
+<body class="bg-base-200 min-h-screen overflow-hidden">
+    <div class="fixed inset-0 -z-10 overflow-hidden">
+        <div class="absolute top-0 left-0 w-96 h-96 bg-error/10 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl"></div>
     </div>
 
+    <div class="min-h-screen flex items-center justify-center px-4 py-8">
+        <div class="w-full max-w-[460px]">
+            <div class="card bg-base-100 border border-base-300 shadow-xl rounded-3xl overflow-hidden">
+                <div class="card-body items-center text-center p-8 sm:p-10">
+                    <div class="relative mb-2">
+                        <div class="text-8xl sm:text-9xl font-black tracking-tight text-error/10 leading-none">
+                            500
+                        </div>
+                    </div>
+
+                    <h1 class="text-3xl font-bold tracking-tight text-base-content">
+                        Something Went Wrong
+                    </h1>
+
+                    <p class="text-sm leading-relaxed text-base-content/60 max-w-sm mt-2">
+                        We encountered an unexpected server error. Please try again in a few moments.
+                    </p>
+
+                    <?php if (!empty($debugMessage)): ?>
+
+                        <div class="alert alert-error text-left w-full mt-6 rounded-2xl shadow-sm">
+                            <span class="text-xs font-mono break-all">
+                                <?= htmlspecialchars($debugMessage) ?>
+                            </span>
+                        </div>
+
+                    <?php endif; ?>
+
+                    <div class="w-full mt-7">
+                        <a
+                            href="/kart-nest/public/"
+                            class="btn btn-primary h-12 min-h-12 w-full rounded-xl text-sm font-semibold shadow-md hover:scale-[1.01] transition"
+                        >
+                            Back to Homepage
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

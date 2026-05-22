@@ -39,6 +39,8 @@ class PasswordResetController extends Controller
             Session::set("errors", [
                 "email" => ["Email address is required"]
             ]);
+            $this->redirect("/forgot-password");
+            return;
         }
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {

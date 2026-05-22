@@ -115,7 +115,7 @@ abstract class Model
         $setParts = [];
         foreach (array_keys($data) as $column) {
             $column = preg_replace("/[^a-zA-Z0-9_]/", "", $column);
-            $setParts[] = "`{$column}`";
+            $setParts[] = "`{$column}` = ?";
         }
 
         $setClause = implode(", ", $setParts);

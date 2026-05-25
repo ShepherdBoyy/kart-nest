@@ -23,3 +23,13 @@ function old(string $key, string $default = ""): string
         "UTF-8"
     );
 }
+
+function slugify(string $text): string
+{
+    $text = strtolower($text);
+    $text = str_replace("&", "and", $text);
+    $text = preg_replace("/[^a-z0-9\s-]/", "", $text);
+    $text = preg_replace("/[\s-]+/", "-", $text);
+
+    return trim($text, "-");
+}

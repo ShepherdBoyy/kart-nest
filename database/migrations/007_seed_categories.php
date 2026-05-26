@@ -42,11 +42,40 @@ class SeedCategories extends Migration
 
     public function up(): void
     {
+        $stmt = $this->db->prepare("INSERT IGNORE INTO categories
+                (name, slug, description)
+            VALUES
+                (?, ?, ?)
+        ");
 
+        foreach ($this->categories as $category) {
+            $slug = slugify($category["name"]);
+
+            $stmt->execute([
+                $category["name"],
+                $slug,
+                $category["description"]
+            ]);
+
+            echo " Seeded category: {$category["name"]}\n";
+        }
     }
 
     public function down(): void
     {
+        $slugs = array_map(
+            fn($cat) => slugify($cat["name"]),
+            $this->categories
+        );
 
+        $placeholders = implode(
+            ",",
+            array_fill(0, count($slugs), "?")
+        );
+
+        $stmt = $this->db->prepare(
+            "DELETE FROM categories WHERE slug IN ({$placeholders})"
+        );
+        $stmt->execute($slugs);
     }
 }

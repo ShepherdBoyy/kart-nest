@@ -107,7 +107,7 @@
                             placeholder="Type here"
                             class="input input-bordered h-12 rounded-xl w-full text-sm <?= !empty($errors["password_confirmation"])
                                 ? "input-error"
-                                : "focus:input-prmary"
+                                : "focus:input-primary"
                             ?>"
                             autocomplete="new-password"
                         />

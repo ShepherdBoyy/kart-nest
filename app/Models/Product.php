@@ -88,6 +88,29 @@ class Product extends Model
         ];
     }
 
+    public static function findBySlug(string $slug): ?array
+    {
+        $db = Database::getInstance()->getConnection();
+
+        $stmt = $db->prepare("SELECT
+                p.*
+                c.name AS category_name
+                c.slug AS category_slug
+                u.name AS seller_name
+                u.id AS seller_user_id
+            FROM products p
+            JOIN categories ON c.id = p.category_id
+            JOIN users u ON u.id = p.seller_i
+            WHERE p.slug = ?
+            AND p.is_active = 1
+            LIMIT 1
+        ");
+        $stmt->execute([$slug]);
+        $result = $stmt->fetch();
+
+        return $result !== false ? $result : null;
+    }
+
     public static function findBySeller(int $sellerId, int $page = 1, int $perPage = 20): array
     {
         $db = Database::getInstance()->getConnection();

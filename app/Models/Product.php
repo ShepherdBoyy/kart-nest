@@ -48,7 +48,7 @@ class Product extends Model
         $orderBy = match($filters["sort"] ?? "newest") {
             "price_asc" => "p.price ASC",
             "price_desc" => "p.price DESC",
-            "name_asc" => "p.price ASC",
+            "name_asc" => "p.name ASC",
             default => "p.created_at DESC"
         };
 
@@ -93,14 +93,14 @@ class Product extends Model
         $db = Database::getInstance()->getConnection();
 
         $stmt = $db->prepare("SELECT
-                p.*
-                c.name AS category_name
-                c.slug AS category_slug
-                u.name AS seller_name
+                p.*,
+                c.name AS category_name,
+                c.slug AS category_slug,
+                u.name AS seller_name,
                 u.id AS seller_user_id
             FROM products p
-            JOIN categories ON c.id = p.category_id
-            JOIN users u ON u.id = p.seller_i
+            JOIN categories c ON c.id = p.category_id
+            JOIN users u ON u.id = p.seller_id
             WHERE p.slug = ?
             AND p.is_active = 1
             LIMIT 1
@@ -183,7 +183,7 @@ class Product extends Model
         return $stmt->fetchAll();
     }
 
-    public static function gerenateSlug(string $name): string
+    public static function generateSlug(string $name): string
     {
         $baseSlug = slugify($name);
         $slug = $baseSlug;

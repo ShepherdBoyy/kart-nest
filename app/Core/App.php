@@ -25,6 +25,8 @@ class App
             ->middleware("guest");
         $this->router->post("/login", "LoginController", "login")
             ->middleware("guest");
+        $this->router->get("/logout", "LoginController", "logout")
+            ->middleware("auth");
         
         $this->router->get("/forgot-password", "PasswordResetController", "showForgotForm")
             ->middleware("guest");
@@ -35,9 +37,9 @@ class App
             ->middleware("guest");
         $this->router->post("/reset-password", "PasswordResetController", "resetPassword")
             ->middleware("guest");
-
-        $this->router->get("/logout", "LoginController", "logout")
-            ->middleware("auth");
+        
+        $this->router->get("/products", "ProductController", "index");
+        $this->router->get("/products/{slug}", "ProductController", "show");
     }
 
     public function run(): void

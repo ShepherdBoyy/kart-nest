@@ -1,104 +1,82 @@
-<?php
-// Build a URL preserving current filters but changing one value
-// Usage: filterUrl(['category' => 'electronics'])
-function filterUrl(array $overrides = []): string
-{
-    $params = array_merge([
-        'search' => $_GET['search'] ?? '',
-        'category' => $_GET['category'] ?? '',
-        'sort' => $_GET['sort'] ?? 'newest',
-        'min_price' => $_GET['min_price'] ?? '',
-        'max_price' => $_GET['max_price'] ?? '',
-        'page' => 1,
-    ], $overrides);
-
-    // Remove empty values from the URL
-    $params = array_filter(
-        $params,
-        fn($v) => $v !== '' && $v !== null
-    );
-
-    $base = rtrim($_ENV['APP_URL'], '/');
-    return $base . '/products?' . http_build_query($params);
-}
-?>
-
-<div class="flex flex-col gap-6">
-
-    <div class="flex flex-col sm:flex-row
-                sm:items-center sm:justify-between gap-4">
+<div class="flex flex-col gap-8">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-            <h1 class="text-2xl font-bold text-base-content">
-                Products
+            <h1 class="text-3xl font-black tracking-tight text-base-content">
+                <?php if (!empty($filters["category"])): ?>
+                    <?= e(ucfirst($filters["category"])) ?>
+                <?php else: ?>
+                    All Products
+                <?php endif; ?>
             </h1>
-            <?php if (!empty($filters['search'])): ?>
-                <p class="text-base-content/60 text-sm mt-1">
-                    Search results for
-                    "<strong><?= e($filters['search']) ?></strong>"
+
+            <?php if (!empty($filters["search"])): ?>
+                <p class="text-base-content/50 text-sm mt-1">
+                    Results for <strong class="text-base-content"><?= e($filters["search"]) ?></strong>
+                </p>
+            <?php else: ?>
+                <p class="text-base-content/50 text-sm mt-1">
+                    <?= number_format($paginator->total()) ?> items available
                 </p>
             <?php endif; ?>
         </div>
 
-        <form action="<?= e($_ENV['APP_URL']) ?>/products" method="GET" class="flex gap-2">
-
-            <?php if (!empty($filters['category'])): ?>
-                <input type="hidden" name="category" value="<?= e($filters['category']) ?>">
-            <?php endif; ?>
-            <?php if (
-                !empty($filters['sort'])
-                && $filters['sort'] !== 'newest'
-            ): ?>
-                <input type="hidden" name="sort" value="<?= e($filters['sort']) ?>">
+        <form action="<?= e($_ENV["APP_URL"]) ?>/products" method="GET" class="flex gap-2 w-full sm:w-auto">
+            <?php if (!empty($filters["category"])): ?>
+                <input type="hidden" name="category" value="<?= e($filters["category"]) ?>" />
             <?php endif; ?>
 
-            <input type="search" name="search" value="<?= e($filters['search']) ?>" placeholder="Search products..."
-                class="input input-bordered input-sm w-full
-                       max-w-xs">
-            <button type="submit" class="btn btn-primary btn-sm">
+            <?php if (!empty($filters["sort"]) && $filters["sort"] !== "newest"): ?>
+                <input type="hidden" name="sort" value="<?= e($filters["sort"]) ?>" />
+            <?php endif; ?>
+
+            <div class="relative flex-1 sm:w-72">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 z-10 pointer-events-none">
+                    <path d="m21 21-4.34-4.34" />
+                    <circle cx="11" cy="11" r="8" />
+                </svg>
+
+                <input type="search" name="search" placeholder="Search products..."
+                    class="input input-bordered h-11 pl-10 rounded-xl w-full text-sm" />
+            </div>
+
+            <button type="submit"
+                class="btn btn-primary h-11 min-h-11 rounded-xl px-5 text-sm font-semibold shadow-md shadow-primary/20 hover:scale-[1.02] transition">
                 Search
             </button>
-            <?php if (!empty($filters['search'])): ?>
-                <a href="<?= filterUrl(['search' => '']) ?>" class="btn btn-ghost btn-sm">
-                    Clear
-                </a>
-            <?php endif; ?>
         </form>
     </div>
 
     <div class="flex flex-col lg:flex-row gap-6">
-
-        <aside class="w-full lg:w-64 flex-shrink-0">
-
-            <div class="card bg-base-100 shadow-sm mb-4">
-                <div class="card-body p-4">
-                    <h2 class="font-semibold text-sm
-                               text-base-content/70 uppercase
-                               tracking-wider mb-3">
+        <aside class="w-full lg:w-64 flex-shrink-0 flex flex-col gap-4">
+            <div class="card bg-base-100 border border-base-300 shadow-xl rounded-3xl overflow-hidden">
+                <div class="card-body p-5">
+                    <h2 class="text-xs font-black uppercase tracking-widest text-base-content/40 mb-3">
                         Categories
                     </h2>
 
-                    <ul class="menu menu-sm p-0">
+                    <ul class="flex flex-col gap-1">
                         <li>
-                            <a href="<?= filterUrl(['category' => '']) ?>" class="<?= empty($filters['category'])
-                                    ? 'active'
-                                    : '' ?>">
+                            <a href="<?= filterUrl(["category" => ""]) ?>" class="flex items-center px-3 py-2 rounded-xl text-sm font-medium transition
+                                    <?= empty($filters["category"])
+                                        ? "bg-primary text-primary-content shadow-sm"
+                                        : "hover:bg-base-200 text-base-content/70 hover:text-base-content" ?>">
                                 All Categories
                             </a>
                         </li>
+
                         <?php foreach ($categories as $cat): ?>
                             <li>
-                                <a href="<?= filterUrl([
-                                    'category' => $cat['slug']
-                                ]) ?>" class="flex justify-between
-                                          <?= $filters['category']
-                                              === $cat['slug']
-                                              ? 'active'
-                                              : '' ?>">
-                                    <span>
-                                        <?= e($cat['name']) ?>
-                                    </span>
-                                    <span class="badge badge-sm">
-                                        <?= (int) $cat['product_count'] ?>
+                                <a href="<?= filterUrl(["category" => $cat["slug"]]) ?>" class="flex items-center justify-between px-3 py-2 rounded-xl text-sm font-medium transition
+                                        <?= $filters["category"] === $cat["slug"]
+                                            ? "bg-primary text-primary-content shadow-sm"
+                                            : "hover:bg-base-200 text-base-content/70 hover:text-base-content" ?>">
+                                    <span><?= e($cat["name"]) ?></span>
+                                    <span class="badge badge-sm <?= $filters["category"] === $cat["slug"]
+                                        ? "bg-primary-content/20 text-primary-content border-0"
+                                        : "badge-ghost" ?>">
+                                        <?= (int) $cat["product_count"] ?>
                                     </span>
                                 </a>
                             </li>
@@ -107,81 +85,83 @@ function filterUrl(array $overrides = []): string
                 </div>
             </div>
 
-            <div class="card bg-base-100 shadow-sm mb-4">
-                <div class="card-body p-4">
-                    <h2 class="font-semibold text-sm
-                               text-base-content/70 uppercase
-                               tracking-wider mb-3">
+            <div class="card bg-base-100 border border-base-300 shadow-xl rounded-3xl overflow-hidden">
+                <div class="card-body p-5">
+                    <h2 class="text-xs font-black uppercase tracking-widest text-base-content/40 mb-3">
                         Price Range
                     </h2>
 
-                    <form action="<?= e($_ENV['APP_URL']) ?>/products" method="GET">
-
-                        <?php if (!empty($filters['search'])): ?>
-                            <input type="hidden" name="search" value="<?= e($filters['search']) ?>">
-                        <?php endif; ?>
-                        <?php if (!empty($filters['category'])): ?>
-                            <input type="hidden" name="category" value="<?= e($filters['category']) ?>">
-                        <?php endif; ?>
-                        <?php if (!empty($filters['sort'])): ?>
-                            <input type="hidden" name="sort" value="<?= e($filters['sort']) ?>">
+                    <form action="<?= e($_ENV["APP_URL"]) ?>/products" method="GET" class="flex flex-col gap-3">
+                        <?php if (!empty($filters["search"])): ?>
+                            <input type="hidden" name="search" value="<?= e($filters["search"]) ?>" />
                         <?php endif; ?>
 
-                        <div class="flex gap-2 mb-3">
+                        <?php if (!empty($filters["category"])): ?>
+                            <input type="hidden" name="category" value="<?= e($filters["category"]) ?>" />
+                        <?php endif; ?>
+
+                        <?php if (!empty($filters["sort"])): ?>
+                            <input type="hidden" name="sort" value="<?= e($filters["sort"]) ?>" />
+                        <?php endif; ?>
+
+                        <div class="flex gap-2">
                             <div class="form-control flex-1">
-                                <label class="label py-0">
-                                    <span class="label-text text-xs">
-                                        Min (₱)
-                                    </span>
+                                <label class="label py-0 pb-1">
+                                    <span class="label-text text-xs font-semibold">Min (₱)</span>
                                 </label>
-                                <input type="number" name="min_price"
-                                    value="<?= e((string) ($filters['min_price'] ?? '')) ?>" placeholder="0" min="0"
-                                    class="input input-bordered
-                                           input-sm w-full">
+                                <input
+                                    type="number"
+                                    name="min_price"
+                                    class="input input-bordered input-sm h-10 rounded-xl w-full text-sm focus:input-primary"
+                                    placeholder="Type here..."
+                                />
                             </div>
+
                             <div class="form-control flex-1">
-                                <label class="label py-0">
-                                    <span class="label-text text-xs">
-                                        Max (₱)
-                                    </span>
+                                <label class="label py-0 pb-1">
+                                    <span class="label-text text-xs font-semibold">Min (₱)</span>
                                 </label>
-                                <input type="number" name="max_price"
-                                    value="<?= e((string) ($filters['max_price'] ?? '')) ?>" placeholder="Any" min="0"
-                                    class="input input-bordered
-                                           input-sm w-full">
+                                <input
+                                    type="number"
+                                    name="max_price"
+                                    class="input input-bordered input-sm h-10 rounded-xl w-full text-sm focus:input-primary"
+                                    placeholder="Type here..."
+                                />
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-outline btn-sm w-full">
-                            Apply
+                        <button
+                            type="submit"
+                            class="btn btn-primary h-10 min-h-10 w-full rounded-xl text-sm font-semibold shadow-md shadow-primary/20 hover:scale-[1.01] transition"
+                        >
+                            Apply Filter
                         </button>
 
-                        <?php if (
-                            !empty($filters['min_price'])
-                            || !empty($filters['max_price'])
-                        ): ?>
-                            <a href="<?= filterUrl([
-                                'min_price' => '',
-                                'max_price' => '',
-                            ]) ?>" class="btn btn-ghost btn-sm w-full mt-1">
-                                Clear price
+                        <?php if (!empty($filters["min_price"]) || !empty($filters["max_price"])): ?>
+                            <a
+                                href="<?= filterUrl(["min_price" => "", "max_price" => ""]) ?>"
+                                class="btn btn-ghost btn-sm w-full rounded-xl text-xs"
+                            >
+                                Clear price filter
                             </a>
                         <?php endif; ?>
                     </form>
                 </div>
             </div>
-
         </aside>
 
-        <div class="flex-1 min-w-0">
-
-            <div class="flex items-center justify-between mb-4">
-                <p class="text-sm text-base-content/60">
+        <div class="flex-1 min-w-0 flex flex-col gap-5">
+            <div class="flex items-center justify-between">
+                <p class="text-sm text-base-content/50">
                     <?php if ($paginator->total() > 0): ?>
                         Showing
-                        <strong><?= $paginator->from() ?></strong>–<strong><?= $paginator->to() ?></strong>
+                        <span class="font-semibold text-base-content">
+                            <?= $paginator->from() ?>-<?= $paginator->to() ?>
+                        </span>
                         of
-                        <strong><?= number_format($paginator->total()) ?></strong>
+                        <span class="font-semibold text-base-content">
+                            <?= number_format($paginator->total()) ?>
+                        </span>
                         products
                     <?php else: ?>
                         No products found
@@ -189,136 +169,93 @@ function filterUrl(array $overrides = []): string
                 </p>
 
                 <div class="flex items-center gap-2">
-                    <span class="text-sm text-base-content/60
-                                 hidden sm:block">
-                        Sort:
-                    </span>
-                    <select class="select select-bordered select-sm" onchange="window.location.href=this.value">
-                        <option value="<?= filterUrl(['sort' => 'newest']) ?>" <?= $sort === 'newest'
-                                ? 'selected' : '' ?>>
+                    <span class="text-sm text-base-content/40 hidden sm:block flex-shrink-0">Sort by</span>
+                    <select class="select select-bordered select-sm h-10 rounded-xl text-sm">
+                        <option
+                            value="<?= filterUrl(["sort" => "newest"]) ?>
+                            <?= $sort === "newest" ? "selected" : "" ?>"
+                        >
                             Newest
                         </option>
-                        <option value="<?= filterUrl(['sort' => 'price_asc']) ?>" <?= $sort === 'price_asc'
-                                ? 'selected' : '' ?>>
-                            Price: Low to High
+                        <option
+                            value="<?= filterUrl(["sort" => "price_asc"]) ?>
+                            <?= $sort === "newest" ? "selected" : "" ?>"
+                        >
+                            Price: Low → High
                         </option>
-                        <option value="<?= filterUrl(['sort' => 'price_desc']) ?>" <?= $sort === 'price_desc'
-                                ? 'selected' : '' ?>>
-                            Price: High to Low
+                        <option
+                            value="<?= filterUrl(["sort" => "price_desc"]) ?>
+                            <?= $sort === "newest" ? "selected" : "" ?>"
+                        >
+                            Price: High → Low
                         </option>
-                        <option value="<?= filterUrl(['sort' => 'name_asc']) ?>" <?= $sort === 'name_asc'
-                                ? 'selected' : '' ?>>
-                            Name: A to Z
+                        <option
+                            value="<?= filterUrl(["sort" => "name_asc"]) ?>
+                            <?= $sort === "newest" ? "selected" : "" ?>"
+                        >
+                            Name: A → Z
                         </option>
                     </select>
                 </div>
             </div>
 
             <?php if (empty($products)): ?>
+                <div class="card bg-base-100 border border-base-300 shadow-xl rounded-3xl overflow-hidden">
+                    <div class="card-body items-center text-center py-20 gap-4">
+                        <div class="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl">
+                            🛍️
+                        </div>
 
-                <div class="flex flex-col items-center
-                            justify-center py-24 text-center">
-                    <div class="text-6xl mb-4 opacity-20">
-                        🛍️
+                        <div>
+                            <h3 class="text-lg font-black tracking-tight">
+                                No products found
+                            </h3>
+                            <p class="text-base-content/50 text-sm mt-1">
+                                Try adjusting your filters or search term
+                            </p>
+                        </div>
+
+                        <a href="<?= e($_ENV["APP_URL"]) ?>/products"
+                            class="btn btn-primary rounded-xl px-6 shadow-md shadow-primary/20 hover:scale-[1.02] transition">
+                            Clear all filters
+                        </a>
                     </div>
-                    <h3 class="text-lg font-semibold mb-2">
-                        No products found
-                    </h3>
-                    <p class="text-base-content/60 text-sm mb-4">
-                        Try adjusting your filters or search term
-                    </p>
-                    <a href="<?= e($_ENV['APP_URL']) ?>/products" class="btn btn-primary btn-sm">
-                        Clear all filters
-                    </a>
                 </div>
-
             <?php else: ?>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2
-                            xl:grid-cols-3 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
                     <?php foreach ($products as $product): ?>
-
-                        <a href="<?= e($_ENV['APP_URL'])
-                            . '/products/'
-                            . $product['slug'] ?>" class="card bg-base-100 shadow-sm
-                                  hover:shadow-md transition-shadow
-                                  cursor-pointer group">
-
-                            <figure class="aspect-square
-                                          overflow-hidden bg-base-200">
-                                <?php if (!empty($product['image'])): ?>
-                                    <img src="<?= e($_ENV['APP_URL'])
-                                        . '/assets/images/products/'
-                                        . $product['image'] ?>" alt="<?= e($product['name']) ?>" class="w-full h-full
-                                               object-cover
-                                               group-hover:scale-105
-                                               transition-transform
-                                               duration-300" loading="lazy">
+                        <a href="<?= e($_ENV["APP_URL"] . "/products/" . $product["slug"]) ?>"
+                            class="card bg-base-100 border border-base-300 shadow-xl rounded-3xl overflow-hidden hover:shadow-2xl hover:-translate-y-0.5 transition-all duration-200 group">
+                            <figure class="relative aspect-square overflow-hidden bg-base-200">
+                                <?php if (!empty($product["image"])): ?>
+                                    <img
+                                        src="<?= e($_ENV["APP_URL"] . "/assets/images/products/" . $product["image"]) ?>"
+                                        alt="<?= e($product["name"]) ?>"
+                                        loading="lazy"
+                                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                    />
                                 <?php else: ?>
-                                    <div class="w-full h-full
-                                                flex items-center
-                                                justify-center
-                                                text-4xl opacity-20">
+                                    <div class="w-full h-full flex items-center justify-center text-5xl opacity-20">
                                         📦
                                     </div>
                                 <?php endif; ?>
-                            </figure>
 
-                            <div class="card-body p-4">
-
-                                <div class="badge badge-outline
-                                            badge-sm">
-                                    <?= e($product['category_name']) ?>
-                                </div>
-
-                                <h3 class="font-semibold text-sm
-                                           line-clamp-2 mt-1">
-                                    <?= e($product['name']) ?>
-                                </h3>
-
-                                <div class="flex items-center
-                                            justify-between mt-auto
-                                            pt-2">
-                                    <span class="text-primary
-                                                 font-bold text-lg">
-                                        <?= App\Models\Product::formatPrice(
-                                            $product['price']
-                                        ) ?>
-                                    </span>
-
-                                    <?php if ((int) $product['stock'] === 0): ?>
-                                        <span class="badge badge-error
-                                                     badge-sm">
+                                <div>
+                                    <?php if ((int) $product["stock"] === 0): ?>
+                                        <span class="badge badge-error badge-sm font-semibold shadow-sm">
                                             Out of stock
                                         </span>
-                                    <?php elseif ((int) $product['stock'] <= 5): ?>
-                                        <span class="badge badge-warning
-                                                     badge-sm">
-                                            Only <?= $product['stock'] ?> left
-                                        </span>
-                                    <?php else: ?>
-                                        <span class="badge badge-success
-                                                     badge-sm">
-                                            In stock
+                                    <?php elseif ((int) $product["stock"] <= 5): ?>
+                                        <span class="badge badge-warning badge-sm font-semibold shadow-sm">
+                                            Only <?= $product["stock"] ?> left
                                         </span>
                                     <?php endif; ?>
                                 </div>
-
-                                <p class="text-xs text-base-content/50
-                                          mt-1">
-                                    by <?= e($product['seller_name']) ?>
-                                </p>
-
-                            </div>
+                            </figure>
                         </a>
-
                     <?php endforeach; ?>
                 </div>
-
-                <?= $paginator->links() ?>
-
             <?php endif; ?>
-
         </div>
     </div>
 </div>

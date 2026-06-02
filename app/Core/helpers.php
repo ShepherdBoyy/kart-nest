@@ -33,3 +33,19 @@ function slugify(string $text): string
 
     return trim($text, "-");
 }
+
+function filterUrl(array $overrides = []): string
+{
+    $params = array_merge([
+        'search'    => $_GET['search']    ?? '',
+        'category'  => $_GET['category']  ?? '',
+        'sort'      => $_GET['sort']      ?? 'newest',
+        'min_price' => $_GET['min_price'] ?? '',
+        'max_price' => $_GET['max_price'] ?? '',
+        'page'      => 1,
+    ], $overrides);
+ 
+    $params = array_filter($params, fn($v) => $v !== '' && $v !== null);
+    $base   = rtrim($_ENV['APP_URL'], '/');
+    return $base . '/products?' . http_build_query($params);
+}

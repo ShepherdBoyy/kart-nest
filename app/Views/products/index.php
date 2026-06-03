@@ -1,3 +1,15 @@
+<?php
+
+/** @var string $title */
+/** @var array $products */
+/** @var App\Core\Paginator $paginator */
+/** @var array $categories */
+/** @var array $filters */
+/** @var string $search */
+/** @var string $sort */
+
+?>
+
 <div class="flex flex-col gap-8">
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
@@ -40,11 +52,6 @@
                 <input type="search" name="search" placeholder="Search products..."
                     class="input input-bordered h-11 pl-10 rounded-xl w-full text-sm" />
             </div>
-
-            <button type="submit"
-                class="btn btn-primary h-11 min-h-11 rounded-xl px-5 text-sm font-semibold shadow-md shadow-primary/20 hover:scale-[1.02] transition">
-                Search
-            </button>
         </form>
     </div>
 
@@ -240,7 +247,7 @@
                                     </div>
                                 <?php endif; ?>
 
-                                <div>
+                                <div class="absolute top-3 right-3">
                                     <?php if ((int) $product["stock"] === 0): ?>
                                         <span class="badge badge-error badge-sm font-semibold shadow-sm">
                                             Out of stock
@@ -252,9 +259,48 @@
                                     <?php endif; ?>
                                 </div>
                             </figure>
+
+                            <div class="card-body p-4 gap-2">
+                                <span class="badge badge-outline badge-sm rounded-lg font-semibold tracking-wide text-xs">
+                                    <?= e($product["category_name"]) ?>
+                                </span>
+                                <h3 class="font-black text-sm leading-snug line-clamp-2 tracking-tight">
+                                    <?= e($product["name"]) ?>
+                                </h3>
+                                <h3 class="text-xs text-base-content/40 font-medium">
+                                    by <?= e($product["seller_name"]) ?>
+                                </h3>
+
+                                <div class="divider my-0"></div>
+
+                                <div class="flex items-center justify-between">
+                                    <span class="text-primary font-black text-xl tracking-tight">
+                                        <?= App\Models\Product::formatPrice($product["price"]) ?>
+                                    </span>
+
+                                    <?php if ((int) $product["stock"] > 5): ?>
+                                        <span class="flex items-center gap-1 text-success text-xs font-semibold">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-success inline-block"></span>
+                                            In stock
+                                        </span>
+                                    <?php elseif ((int) $product["stock"] > 0): ?>
+                                        <span class="flex items-center gap-1 text-warning text-xs font-semibold">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-warning inline-block"></span>
+                                            <?= $product["stock"] ?> left
+                                        </span>
+                                    <?php else: ?>
+                                        <span class="flex items-center gap-1 text-error text-xs font-semibold">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-error inline-block"></span>
+                                            Sold out
+                                        </span>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
                         </a>
                     <?php endforeach; ?>
                 </div>
+
+                <?= $paginator->links() ?>
             <?php endif; ?>
         </div>
     </div>

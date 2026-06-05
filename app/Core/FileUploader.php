@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace App\Core;
+
 class FileUploader
 {
     private const MAX_SIZE = 5 * 1024 * 1024;

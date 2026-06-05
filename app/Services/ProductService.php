@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Core\FileUploader;
 use App\Core\Validator;
 use App\Models\Product;
-use FileUploader;
 
 class ProductService
 {
@@ -88,7 +88,7 @@ class ProductService
         return true;
     }
 
-    public function deleteProductd(int $productId, int $sellerId): bool
+    public function deleteProduct(int $productId, int $sellerId): bool
     {
         $product = Product::find($productId);
         if ($product === null) {

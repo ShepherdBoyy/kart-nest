@@ -2,7 +2,7 @@
     /** @var array $categories */
 ?>
 
-<div class="flex flex-col gap-6">
+<div class="max-w-5xl mx-auto flex flex-col gap-6">
     <div class="flex items-center justify-between">
         <div>
             <h1 class="text-3xl font-black tracking-tight text-base-content">Add New Product</h1>
@@ -23,6 +23,9 @@
     </div>
 
     <form action="<?= e($_ENV["APP_URL"]) ?>/seller/products" method="POST" enctype="multipart/form-data" novalidate>
+
+        <?= csrf_field() ?>
+
         <div class="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-6">
             <div class="flex flex-col gap-5">
                 <div class="card bg-base-100 border border-base-300 shadow-xl rounded-3xl overflow-hidden">
@@ -58,9 +61,8 @@
 
                         <div class="form-control">
                             <label class="label py-0 pb-1.5" for="description">
-                                <span class="label-text text-sm font-semibold">
-                                    Product name <span class="text-error">*</span>
-                                </span>
+                                <span class="label-text text-sm font-semibold">Description</span>
+                                <span class="label-text-alt text-base-content/40 text-xs">Optional</span>
                             </label>
                             <textarea
                                 id="description"
@@ -224,6 +226,7 @@
                         <div class="form-control">
                             <select
                                 class="select h-12 rounded-xl w-full text-sm"
+                                name="category_id"
                             >
                                 <option disabled selected>Select a category</option>
                                 <?php foreach ($categories as $category): ?>

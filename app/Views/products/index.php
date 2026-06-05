@@ -177,7 +177,7 @@
 
                 <div class="flex items-center gap-2">
                     <span class="text-sm text-base-content/40 hidden sm:block flex-shrink-0">Sort by</span>
-                    <select class="select select-bordered select-sm h-10 rounded-xl text-sm">
+                    <select class="select select-bordered select-sm h-10 rounded-xl text-sm cursor-pointer">
                         <option
                             value="<?= filterUrl(["sort" => "newest"]) ?>
                             <?= $sort === "newest" ? "selected" : "" ?>"

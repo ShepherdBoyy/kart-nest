@@ -40,6 +40,11 @@ class App
         
         $this->router->get("/products", "ProductController", "index");
         $this->router->get("/products/{slug}", "ProductController", "show");
+
+        $this->router->get("/seller/products", "SellerProductController", "index")
+            ->middleware("auth")->middleware("role:seller");
+        $this->router->get("/seller/products/create", "SellerProductController", "create")
+            ->middleware("auth")->middleware("role:seller");
     }
 
     public function run(): void

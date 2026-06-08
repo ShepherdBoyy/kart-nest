@@ -45,6 +45,10 @@ class App
             ->middleware("auth")->middleware("role:seller");
         $this->router->get("/seller/products/create", "SellerProductController", "create")
             ->middleware("auth")->middleware("role:seller");
+        $this->router->post("/seller/products", "SellerProductController", "store")
+            ->middleware("auth")->middleware("role:seller");
+        $this->router->get("/seller/products/{id}/edit", "SellerProductController", "edit")
+            ->middleware("auth")->middleware("role:seller");
     }
 
     public function run(): void

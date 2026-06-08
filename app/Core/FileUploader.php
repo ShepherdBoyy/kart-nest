@@ -82,9 +82,25 @@ class FileUploader
 
     public function hasFile(string $fileInput): bool
     {
-        return isset($_FILES[$fileInput])
-            && $_FILES[$fileInput] !== UPLOAD_ERR_NO_FILE
-            && $_FILES[$fileInput]["size"] > 0;
+        if (!isset($_FILES[$fileInput])) {
+            return false;
+        }
+
+        $file = $_FILES[$fileInput];
+
+        if ($file["error"] === UPLOAD_ERR_NO_FILE) {
+            return false;
+        }
+
+        if ($file["size"] === 0) {
+            return false;
+        }
+
+        if (empty($file["tmp_name"]) || !is_uploaded_file($file["tmp_name"])) {
+            return false;
+        }
+
+        return true;
     }
 
     private function checkUploadError(int $errorCode): void

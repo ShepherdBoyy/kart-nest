@@ -118,23 +118,32 @@ class Router
             throw new \RuntimeException("Method {$actionName} not found in {$controllerClass}");
         }
 
-        if (!empty($params)) {
-            $reflection = new \ReflectionMethod($controller, $actionName);
+        $reflection = new \ReflectionMethod($controller, $actionName);
+        $args = [];
+        
+        foreach ($reflection->getParameters() as $param) {
+            $paramName = $param->getName();
 
-            $args = [];
-            foreach ($reflection->getParameters() as $param) {
-                $paramName = $param->getName();
-                if (isset($params[$paramName])) {
-                    $args[] = $params[$paramName];
-                } elseif ($param->isOptional()) {
-                    $args[] = $param->getDefaultValue();
+            if (isset($params[$paramName])) {
+                $value = $params[$paramName];
+                $type = $param->getType();
+
+                if ($type instanceof \ReflectionNamedType) {
+                    $value = match($type->getName()) {
+                        "int" => (int) $value,
+                        "float" => (float) $value,
+                        "bool" => (bool) $value,
+                        default => $value
+                    };
                 }
-            }
 
-            $controller->$actionName(...$args);
-        } else {
-            $controller->$actionName();
+                $args[] = $value;
+            } elseif ($param->isOptional()) {
+                $args[] = $param->getDefaultValue();
+            }
         }
+
+        $controller->$actionName(...$args);
     }
 
     private function runMiddleware(array $middlewareList): void

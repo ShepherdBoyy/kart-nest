@@ -2,7 +2,7 @@
     /** @var array $categories */
 ?>
 
-<div class="max-w-5xl mx-auto flex flex-col gap-6">
+<div class="flex flex-col gap-6">
     <div class="flex items-center justify-between">
         <div>
             <h1 class="text-3xl font-black tracking-tight text-base-content">Add New Product</h1>
@@ -87,7 +87,7 @@
                                     </span>
                                 </label>
                                 <div class="relative">
-                                    <span class="absolute left-4 top-1/2 -translate-y-1/2 font-black text-base-content/40 pointer-events-none">
+                                    <span class="absolute left-4 top-1/2 -translate-y-1/2 z-10 font-black text-base-content/40 pointer-events-none">
                                         ₱
                                     </span>
                                     <input
@@ -98,7 +98,7 @@
                                         placeholder="0.00"
                                         min="0.01"
                                         step="0.01"
-                                        class="input input-bordered h-12 rounded-xl w-full text-sm
+                                        class="input input-bordered h-12 rounded-xl w-full text-sm pl-10
                                             <?= !empty($errors["price"]) 
                                                 ? "input-error"
                                                 : "focus:input-primary" ?>"
@@ -120,9 +120,10 @@
                                     </span>
                                 </label>
                                 <div class="relative">
-                                    <span class="absolute left-4 top-1/2 -translate-y-1/2 font-black text-base-content/40 pointer-events-none">
-                                        ₱
-                                    </span>
+                                    <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 z-10 w-4 h-4 text-base-content/30 pointer-events-none"
+                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                                    </svg>
                                     <input
                                         type="number"
                                         id="stock"
@@ -131,31 +132,20 @@
                                         placeholder="0"
                                         min="0"
                                         step="1"
-                                        class="input input-bordered h-12 rounded-xl w-full text-sm
+                                        class="input input-bordered h-12 rounded-xl w-full text-sm pl-10
                                             <?= !empty($errors["stock"]) 
                                                 ? "input-error"
                                                 : "focus:input-primary" ?>"
                                     />
-                                    <?php if (!empty($errors["stock"])): ?>
-                                        <label class="label pt-1.5">
-                                            <span class="label-text-alt text-error text-xs">
-                                                <?= e($errors["stock"][0]) ?>
-                                            </span>
-                                        </label>
-                                    <?php endif; ?>
                                 </div>
-                            </div>
 
-                            <div
-                                id="price-preview"
-                                class="hidden flex items-center justify-between px-5 py-3.5 rounded-2xl bg-primary/5 border border-primary/15"
-                            >
-                                <span class="text-xs font-black uppercase tracking-widest text-primary/60">
-                                    Listing price
-                                </span>
-                                <span id="price-preview-value" class="text-2xl font-black text-primary tracking-tight">
-                                    ₱0.00
-                                </span>
+                                <?php if (!empty($errors["stock"])): ?>
+                                    <label class="label pt-1.5">
+                                        <span class="label-text-alt text-error text-xs">
+                                            <?= e($errors["stock"][0]) ?>
+                                        </span>
+                                    </label>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>

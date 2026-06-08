@@ -9,6 +9,8 @@ use App\Core\Model;
 
 class Product extends Model
 {
+    protected static string $table = "products";
+
     public static function getPaginated(array $filters = [], int $page = 1, int $perPage = 12): array
     {
         $db = Database::getInstance()->getConnection();

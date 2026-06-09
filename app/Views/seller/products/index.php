@@ -92,7 +92,7 @@
                                         <div class="w-12 h-12 bg-base-200 rounded-2xl overflow-hidden flex-shrink-0 border border-base-300/60">
                                             <?php if (!empty($product["image"])): ?>
                                                 <img
-                                                    src="<?= e($_ENV["APP_URL"] . "/assets/images/products" . $product["image"]) ?>"
+                                                    src="<?= e($_ENV["APP_URL"] . "/assets/images/products/" . $product["image"]) ?>"
                                                     alt="<?= e($product["name"]) ?>"
                                                     class="w-full h-full object-cover"
                                                 />
@@ -157,7 +157,7 @@
                                         </a>
 
                                         <form
-                                            action="<?= e($_ENV["APP_URL"] . "/seller/products" . $product["id"] . "/delete") ?>"
+                                            action="<?= e($_ENV["APP_URL"] . "/seller/products/" . $product["id"] . "/delete") ?>"
                                             method="POST"
                                             onsubmit="return confirm('Delete <?= e(addslashes($product['name'])) ?>? This cannot be undone.')"
                                         >

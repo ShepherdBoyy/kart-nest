@@ -22,7 +22,7 @@ class FileUploader
 
     public function upload(string $fileInput): string
     {
-        if (!isset($_FILEST[$fileInput])) {
+        if (!isset($_FILES[$fileInput])) {
             throw new \RuntimeException("No file was uploaded");
         }
 

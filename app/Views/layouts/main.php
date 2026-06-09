@@ -67,6 +67,13 @@
 
                             <div class="divider my-1"></div>
 
+                            <?php if (App\Core\Session::get("user_role") === "seller" || App\Core\Session::get("user_role") === "admin"): ?>
+                                <li>
+                                    <a href="<?= e($_ENV["APP_URL"]) ?>/seller/products">Seller Dashboard</a>
+                                </li>
+                                <div class="divider my-1"></div>
+                            <?php endif ?>
+
                             <li>
                                 <a href="<?= e($_ENV["APP_URL"]) ?>/profile" class="rounded-xl">
                                     Profile

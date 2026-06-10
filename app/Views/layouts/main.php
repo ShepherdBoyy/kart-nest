@@ -33,67 +33,117 @@
 
                 <?php if (App\Core\Session::has("user_id")): ?>
 
-                    <div class="hidden md:flex flex-col text-right mr-1">
-                        <span class="text-sm font-medium">
-                            <?= e(App\Core\Session::get("user_name")) ?>
-                        </span>
-                        <span class="text-xs text-base-content/50">
-                            Welcome back
-                        </span>
-                    </div>
-
                     <div class="dropdown dropdown-end">
-                        <div tabindex="0" role="button" class="btn btn-ghost btn-circle hover:bg-base-200 transition">
+                        <div
+                            tabindex="0"
+                            role="button"
+                            class="btn btn-ghost btn-circle hover:bg-base-200 transition"
+                        >
                             <div class="avatar avatar-placeholder">
-                                <div class="bg-primary text-primary-content rounded-full w-10 shadow">
-                                    <span class="text-sm font-bold">
-                                        <?= strtoupper(substr(App\Core\Session::get("user_name", "U"), 0, 1)) ?>
-                                    </span>
+                                <div class="bg-primary text-primary-content rounded-full w-10 shadow-md">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                        class="lucide lucide-user-round-icon lucide-user-round">
+                                        <circle cx="12" cy="8" r="5" />
+                                        <path d="M20 21a8 8 0 0 0-16 0" />
+                                    </svg>
                                 </div>
                             </div>
                         </div>
-                        <ul tabindex="0"
-                            class="dropdown-content menu mt-3 p-2 shadow-xl bg-base-100 rounded-2xl border-base-300 w-64">
-                            <li class="px-3 py-2 pointer-events-none">
-                                <div class="flex flex-col gap-1">
-                                    <span class="font-semibold text-sm">
-                                        <?= e(App\Core\Session::get("user_name")) ?>
-                                    </span>
-                                    <span class="text-xs text-base-content/50 break-all">
-                                        <?= e(App\Core\Session::get("user_email")) ?>
-                                    </span>
-                                </div>
-                            </li>
 
-                            <div class="divider my-1"></div>
+                        <div
+                            tabindex="0"
+                            class="dropdown-content mt-3 w-64 bg-base-100 border border-base-300/60 shadow-xl rounded-3xl overflow-hidden"
+                        >
+                            <div class="flex items-center gap-3 px-4 py-4 border-b border-base-200">
+                                <div class="avatar avatar-placeholder flex-shrink-0">
+                                    <div class="bg-primary text-primary-content rounded-2xl w-11 h-11 shadow-md">
+                                        <span class="text-sm font-black">
+                                            <?= strtoupper(substr(App\Core\Session::get("user_name", "U"), 0, 1)) ?>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="min-w-0">
+                                    <p class="font-black text-sm text-base-content leading-tight truncate">
+                                        <?= e(App\Core\Session::get("user_name")) ?>
+                                    </p>
+                                    <p class="text-xs text-base-content/40 truncate mt-0.5">
+                                        <?= e(App\Core\Session::get("user_email")) ?>
+                                    </p>
+                                </div>
+                            </div>
 
                             <?php if (App\Core\Session::get("user_role") === "seller" || App\Core\Session::get("user_role") === "admin"): ?>
-                                <li>
-                                    <a href="<?= e($_ENV["APP_URL"]) ?>/seller/products">Seller Dashboard</a>
-                                </li>
-                                <div class="divider my-1"></div>
-                            <?php endif ?>
 
-                            <li>
-                                <a href="<?= e($_ENV["APP_URL"]) ?>/profile" class="rounded-xl">
+                                <div class="p-2">
+                                    <p class="px-2 pt-1 pb-1.5 text-xs font-black uppercase tracking-widest text-base-content/30">
+                                        <?= ucfirst(App\Core\Session::get("user_role")) ?>
+                                    </p>
+
+                                    <a href="<?= e($_ENV["APP_URL"]) ?>/seller/products"
+                                        class="flex items-center gap-3 px-3 py-2.5 rounded-2xl text-sm font-semibold text-base-content hover:bg-primary/10 hover:text-primary transition-colors">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                            class="lucide lucide-layout-dashboard-icon lucide-layout-dashboard">
+                                            <rect width="7" height="9" x="3" y="3" rx="1" />
+                                            <rect width="7" height="5" x="14" y="3" rx="1" />
+                                            <rect width="7" height="9" x="14" y="12" rx="1" />
+                                            <rect width="7" height="5" x="3" y="16" rx="1" />
+                                        </svg>
+                                        Dashboard
+                                    </a>
+                                </div>
+                                <div class="divider my-0 mx-3 h-px"></div>
+
+                            <?php endif; ?>
+
+                            <div class="p-2">
+                                <a href="<?= e($_ENV["APP_URL"]) ?>/profile"
+                                    class="flex items-center gap-3 px-3 py-2.5 rounded-2xl text-sm font-semibold text-base-content hover:bg-gray-200 transition-colors">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                                        class="lucide lucide-circle-user-round-icon lucide-circle-user-round">
+                                        <path d="M17.925 20.056a6 6 0 0 0-11.851.001" />
+                                        <circle cx="12" cy="11" r="4" />
+                                        <circle cx="12" cy="12" r="10" />
+                                    </svg>
                                     Profile
                                 </a>
-                            </li>
-                            <li>
-                                <a href="<?= e($_ENV["APP_URL"]) ?>/orders" class="rounded-xl">My Orders</a>
-                            </li>
 
-                            <div class="divider my-1"></div>
+                                <a href="<?= e($_ENV["APP_URL"]) ?>/orders"
+                                    class="flex items-center gap-3 px-3 py-2.5 rounded-2xl text-sm font-semibold text-base-content hover:bg-gray-200 transition-colors">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                        class="lucide lucide-shopping-basket-icon lucide-shopping-basket">
+                                        <path d="m15 11-1 9" />
+                                        <path d="m19 11-4-7" />
+                                        <path d="M2 11h20" />
+                                        <path d="m3.5 11 1.6 7.4a2 2 0 0 0 2 1.6h9.8a2 2 0 0 0 2-1.6l1.7-7.4" />
+                                        <path d="M4.5 15.5h15" />
+                                        <path d="m5 11 4-7" />
+                                        <path d="m9 11 1 9" />
+                                    </svg>
+                                    My Orders
+                                </a>
+                            </div>
 
-                            <li>
-                                <a
-                                    href="<?= e($_ENV["APP_URL"]) ?>/logout"
-                                    class="text-error rounded-xl hover:bg-error hover:text-error-content"
-                                >
+                            <div class="divider my-0 mx-3 h-px"></div>
+
+                            <div class="p-2">
+                                <a href="<?= e($_ENV["APP_URL"]) ?>/logout"
+                                    class="flex items-center gap-3 px-3 py-2.5 rounded-2xl text-sm font-semibold text-error hover:bg-error/10 transition-colors">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                        class="lucide lucide-log-out-icon lucide-log-out">
+                                        <path d="m16 17 5-5-5-5" />
+                                        <path d="M21 12H9" />
+                                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                                    </svg>
                                     Logout
                                 </a>
-                            </li>
-                        </ul>
+                            </div>
+                        </div>
                     </div>
 
                 <?php else: ?>
@@ -110,6 +160,7 @@
                     >
                         Get started
                     </a>
+                    
                 <?php endif; ?>
             </div>
         </div>

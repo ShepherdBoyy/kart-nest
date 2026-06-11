@@ -167,42 +167,77 @@
 
     </header>
 
-    <main class="">
-
-        <?php $flashMessages = App\Core\Session::getFlash(); ?>
-
-        <?php if (!empty($flashMessages)): ?>
-
-            <div class="max-w-7xl mx-auto px-4 lg:px-8 pt-6 space-y-3">
-
-                <?php foreach ($flashMessages as $type => $messages): ?>
-                    <?php foreach ($messages as $message): ?>
-                        <?php
-                            $alertClass = match ($type) {
-                                'success' => 'alert-success',
-                                'error' => 'alert-error',
-                                'warning' => 'alert-warning',
-                                'info' => 'alert-info',
-                                default => 'alert-info',
-                            };
-                        ?>
-
-                        <div class="alert <?= $alertClass ?> shadow-lg rounded-2xl">
-                            <span><?= htmlspecialchars($message) ?></span>
-                        </div>
-
-                    <?php endforeach; ?>
-                <?php endforeach; ?>
-
-            </div>
-        <?php endif; ?>
-
+    <main>
         <div class="max-w-7xl mx-auto px-4 lg:px-8 py-8">
             <?= $content ?? '' ?>
         </div>
-
     </main>
 
+    <?php $flashMessages = App\Core\Session::getFlash(); ?>
+    <?php if (!empty($flashMessages)): ?>
+
+        <div class="toast toast-end toast-bottom z-[999]">
+            <?php foreach ($flashMessages as $type => $messages): ?>
+                <?php foreach ($messages as $message): ?>
+                    <?php
+                        $alertClass = match ($type) {
+                            'success' => 'alert-success',
+                            'error' => 'alert-error',
+                            'warning' => 'alert-warning',
+                            'info' => 'alert-info',
+                            default => 'alert-info',
+                        };
+                        
+                        $iconPath = match ($type) {
+                            'success' => 'M5 13l4 4L19 7',
+                            'error'   => 'M6 18L18 6M6 6l12 12',
+                            'warning' => 'M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z',
+                            default   => 'M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20A10 10 0 0012 2z',
+                        };
+                    ?>
+
+                    <div class="alert <?= $alertClass ?> rounded-2xl shadow-xl max-w-sm gap-3 border border-black/5">
+                        <svg class="w-5 h-5 flex-shrink-0" xmlns="http://www.w3.org/2000/svg"
+                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="<?= $iconPath ?>"/>
+                        </svg>
+
+                        <span class="text-sm font-semibold flex-1">
+                            <?= htmlspecialchars($message) ?>
+                        </span>
+
+                        <button
+                            aria-label="Dismiss"
+                            class="btn btn-ghost btn-xs btn-circle opacity-60 hover:opacity-100 transition-opacity"
+                            onclick="this.closest('.alert').remove()"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                class="lucide lucide-x-icon lucide-x">
+                                <path d="M18 6 6 18" />
+                                <path d="m6 6 12 12" />
+                            </svg>
+                        </button>
+                    </div>
+
+                <?php endforeach; ?>
+            <?php endforeach; ?>
+        </div>
+
+    <?php endif; ?>
+
 </body>
+
+<script>
+    document.querySelectorAll(".toast .alert").forEach(function (el, i) {
+        setTimeout(function () {
+            el.style.transition = "opacity 0.4s ease, transform 0.4s ease";
+            el.style.opacity = "0";
+            el.style.transform = "translateX(1rem)";
+            setTimeout(function () { el.remove(); }, 400);
+        }, 4000 + i * 300);
+    });
+</script>
 
 </html>

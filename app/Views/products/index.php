@@ -177,7 +177,10 @@
 
                 <div class="flex items-center gap-2">
                     <span class="text-sm text-base-content/40 hidden sm:block flex-shrink-0">Sort by</span>
-                    <select class="select select-bordered select-sm h-10 rounded-xl text-sm cursor-pointer">
+                    <select
+                        class="select select-bordered select-sm h-10 rounded-xl text-sm cursor-pointer"
+                        onchange="window.location.href=this.value"
+                    >
                         <option
                             value="<?= filterUrl(["sort" => "newest"]) ?>
                             <?= $sort === "newest" ? "selected" : "" ?>"
@@ -185,20 +188,20 @@
                             Newest
                         </option>
                         <option
-                            value="<?= filterUrl(["sort" => "price_asc"]) ?>
-                            <?= $sort === "newest" ? "selected" : "" ?>"
+                            value="<?= filterUrl(["sort" => "price_asc"]) ?>"
+                            <?= $sort === "price_asc" ? "selected" : "" ?>
                         >
                             Price: Low → High
                         </option>
                         <option
-                            value="<?= filterUrl(["sort" => "price_desc"]) ?>
-                            <?= $sort === "newest" ? "selected" : "" ?>"
+                            value="<?= filterUrl(["sort" => "price_desc"]) ?>"
+                            <?= $sort === "price_desc" ? "selected" : "" ?>
                         >
                             Price: High → Low
                         </option>
                         <option
-                            value="<?= filterUrl(["sort" => "name_asc"]) ?>
-                            <?= $sort === "newest" ? "selected" : "" ?>"
+                            value="<?= filterUrl(["sort" => "name_asc"]) ?>"
+                            <?= $sort === "name_asc" ? "selected" : "" ?>
                         >
                             Name: A → Z
                         </option>

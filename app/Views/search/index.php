@@ -1,3 +1,18 @@
+<?php
+function searchFilterUrl(array $overrides = []): string {
+    $params = array_merge([
+        "q" => $_GET["q"] ?? "",
+        "category" => $_GET["category"] ?? "",
+        "sort" => $_GET["sort"] ?? "",
+        "page" => 1
+    ], $overrides);
+
+    $params = array_filter($params, fn($v) => $v !== "" && $v !== null);
+    $base = rtrim($_ENV["APP_URL"], "/");
+    return $base . "/search?" . http_build_query($params);
+}
+?>
+
 <div>
     <div class="card bg-base-100 border border-base-300 shadow-xl rounded-3xl overflow-hidden">
         <div class="card-body p-5 md:p-7">
@@ -92,13 +107,11 @@
                         </p>
 
                         <div>
-                            <!-- <?php foreach ($categories as $cat): ?>
+                            <?php foreach ($categories as $cat): ?>
                                 <?php if ((int) $cat["product_count"] > 0): ?>
-                                    <a href="<?= searchFilterUrl(["q" => $cat["name"], "category" => $cat["slug"]]) ?>"
-                                        >
-                                    </a>
+                                    
                                 <?php endif; ?>
-                            <?php endforeach; ?> -->
+                            <?php endforeach; ?>
                         </div>
                     </div>
 

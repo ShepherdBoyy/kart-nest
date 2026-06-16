@@ -1,5 +1,6 @@
 <?php
     /** @var array $categories */
+    /** @var array $product */
 ?>
 
 <div class="flex flex-col gap-6">
